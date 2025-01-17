@@ -1,4 +1,4 @@
-# mox.ai 🚀
+# mox.ai 
 A comprehensive AI-driven platform for:
 - Real-time market analysis 📊
 - Meme coin trend predictions 📈
