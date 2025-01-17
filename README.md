@@ -17,16 +17,15 @@ A comprehensive AI-driven platform for:
 1. Clone the repository:
    ```bash
       git clone https://github.com/your-username/mox.ai.git
+   
 Install dependencies:
 bash
-نسخ
-تحرير
 pip install -r requirements.txt
+
 
 Run the app locally:
 bash
-نسخ
-تحرير
 python app.py
+
 
 
