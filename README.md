@@ -16,3 +16,6 @@ A comprehensive AI-driven platform for:
 ## Getting Started
 1. Clone the repository:
    ```bash
+pip install -r requirements.txt
+python app.py
+
