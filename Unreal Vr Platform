@@ -1,0 +1,84 @@
+// Unreal Engine VR Platform Project - Main C++ Code
+// File: VRPlatform.cpp
+
+#include "VRPlatform.h"
+#include "Modules/ModuleManager.h"
+
+IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, VRPlatform, "VRPlatform" );
+
+// Game mode class for the VR platform
+#include "VRGameMode.h"
+#include "VRPlayerController.h"
+#include "VRCharacter.h"
+
+// Define the game mode
+AVRGameMode::AVRGameMode()
+{
+    // Set the default player controller class
+    PlayerControllerClass = AVRPlayerController::StaticClass();
+
+    // Set the default character class
+    DefaultPawnClass = AVRCharacter::StaticClass();
+
+    // Use a custom HUD class if needed
+    HUDClass = AHUD::StaticClass();
+}
+
+// Player Controller Class
+AVRPlayerController::AVRPlayerController()
+{
+    // Enable mouse cursor for non-VR testing
+    bShowMouseCursor = true;
+    DefaultMouseCursor = EMouseCursor::Crosshairs;
+}
+
+// VR Character Class
+AVRCharacter::AVRCharacter()
+{
+    // Set up the VR camera
+    VRCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("VRCamera"));
+    VRCamera->SetupAttachment(RootComponent);
+
+    // Add motion controllers
+    LeftController = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("LeftController"));
+    LeftController->SetupAttachment(RootComponent);
+
+    RightController = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("RightController"));
+    RightController->SetupAttachment(RootComponent);
+}
+
+void AVRCharacter::BeginPlay()
+{
+    Super::BeginPlay();
+
+    // Print a message to the log when the game starts
+    UE_LOG(LogTemp, Warning, TEXT("VR Character has been spawned."));
+}
+
+void AVRCharacter::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+
+    // Handle custom per-frame logic here
+}
+
+void AVRCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+    Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+    // Bind VR controller inputs
+    PlayerInputComponent->BindAxis("MoveForward", this, &AVRCharacter::MoveForward);
+    PlayerInputComponent->BindAxis("MoveRight", this, &AVRCharacter::MoveRight);
+}
+
+void AVRCharacter::MoveForward(float Value)
+{
+    // Add movement in the forward direction
+    AddMovementInput(GetActorForwardVector(), Value);
+}
+
+void AVRCharacter::MoveRight(float Value)
+{
+    // Add movement in the right direction
+    AddMovementInput(GetActorRightVector(), Value);
+}
