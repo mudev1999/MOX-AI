@@ -1,0 +1,39 @@
+// VRCharacter.h - Adjustments for Web Compatibility
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Character.h"
+#include "VRCharacter.generated.h"
+
+UCLASS()
+class VRPLATFORM_API AVRCharacter : public ACharacter
+{
+    GENERATED_BODY()
+
+public:
+    // Sets default values for this character's properties
+    AVRCharacter();
+
+protected:
+    // Called when the game starts or when spawned
+    virtual void BeginPlay() override;
+
+public:
+    // Called every frame
+    virtual void Tick(float DeltaTime) override;
+
+    // Called to bind functionality to input
+    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+    // Input methods for Web and VR
+    void MoveForward(float Value);
+    void MoveRight(float Value);
+
+private:
+    // Camera for Web and VR
+    UPROPERTY(VisibleAnywhere)
+    class UCameraComponent* VRCamera;
+
+    // Check if running in a web environment
+    bool bIsWebPlatform;
+};
