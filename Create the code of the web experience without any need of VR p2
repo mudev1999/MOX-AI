@@ -1,0 +1,59 @@
+// VRCharacter.cpp - Implementation
+#include "VRCharacter.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+
+AVRCharacter::AVRCharacter()
+{
+    // Set default properties
+    PrimaryActorTick.bCanEverTick = true;
+
+    // Setup the camera
+    VRCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("VRCamera"));
+    VRCamera->SetupAttachment(RootComponent);
+
+    // Detect if running in a web environment
+    bIsWebPlatform = FPlatformProperties::IsHTML5Platform();
+}
+
+void AVRCharacter::BeginPlay()
+{
+    Super::BeginPlay();
+
+    if (bIsWebPlatform)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Running on Web Platform."));
+    }
+}
+
+void AVRCharacter::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+}
+
+void AVRCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+    Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+    // Bind input actions
+    PlayerInputComponent->BindAxis("MoveForward", this, &AVRCharacter::MoveForward);
+    PlayerInputComponent->BindAxis("MoveRight", this, &AVRCharacter::MoveRight);
+}
+
+void AVRCharacter::MoveForward(float Value)
+{
+    if (Controller && Value != 0.0f)
+    {
+        // Add movement input
+        AddMovementInput(GetActorForwardVector(), Value);
+    }
+}
+
+void AVRCharacter::MoveRight(float Value)
+{
+    if (Controller && Value != 0.0f)
+    {
+        // Add movement input
+        AddMovementInput(GetActorRightVector(), Value);
+    }
+}
